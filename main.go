@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net"
 	"os"
@@ -19,8 +18,6 @@ import (
 )
 
 func main() {
-	fmt.Println("Hello, world")
-
 	host := os.Getenv("SERVER_HOST")
 
 	client := twil.NewTwilioClient("AC123", "123", "", "", "")
@@ -71,8 +68,10 @@ func (s *server) Run(ctx context.Context) error {
 func (s *server) Login(ctx context.Context, req *auth.LoginRequest) (*auth.LoginResponse, error) {
 	switch {
 	case req.Password != "password":
+		log.Println("Password is incorrect")
 		return nil, status.Error(codes.Unauthenticated, "password is incorrect")
 	case req.Username == "":
+		log.Println("Username is required")
 		return nil, status.Error(codes.InvalidArgument, "username is required")
 	}
 
@@ -80,6 +79,7 @@ func (s *server) Login(ctx context.Context, req *auth.LoginRequest) (*auth.Login
 
 	tkn, err := s.genToken()
 	if err != nil {
+		log.Printf("Token generation error %s\n", err)
 		return nil, status.Error(codes.Internal, "token generation error")
 	}
 	s.linkUser(req.Username, tkn)
