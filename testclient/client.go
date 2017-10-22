@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 	"time"
 
 	"golang.org/x/net/context"
@@ -12,9 +13,10 @@ import (
 )
 
 func main() {
+	host := os.Getenv("SERVER_HOST")
 	connCtx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	conn, err := grpc.DialContext(connCtx, "10.0.1.50:8080", grpc.WithInsecure(), grpc.WithBlock())
+	conn, err := grpc.DialContext(connCtx, host, grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
 		log.Println(err, "unable to connect")
 	}
