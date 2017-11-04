@@ -17,10 +17,6 @@ const (
 	InOutScope = "inoutscope"
 )
 
-var scopeFormatMap = map[string]string{
-	InOutScope: incomingOutgoingScopeFormat,
-}
-
 // GenerateToken generate a JWT token based off of the parameters
 func (c *TwilioClient) GenerateToken(client string, scopeType string, expirationDate time.Time) (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)

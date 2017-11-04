@@ -16,8 +16,9 @@ func TestGenerateTokenTestSuccess(t *testing.T) {
 		"appSid",
 		"8008008888",
 	)
-	expectedToken := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE0ODkzNjQ3MDQsImlzcyI6Ik1heCIsInNjb3BlIjoic2NvcGU6Y2xpZW50OmluY29taW5nP2NsaWVudE5hbWU9YXBwU2lkIHNjb3BlOmNsaWVudDpvdXRnb2luZz9hcHBTaWQ9dHdpbGlvQWNjb3VudFNlY3JldFx1MDAyNmNsaWVudE5hbWU9YXBwU2lkIn0.tWtmv__eEkV1NDp3DR35Q8dlvNPSgi10mD2nMTV3z8c"
-	token, err := client.GenerateToken(time.Unix(1489364704, 0))
+	expectedToken := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiJtYXhpbWUiLCJleHAiOjE0ODkzNjQ3MDQsImlzcyI6Ik1heCIsInNjb3BlIjoic2NvcGU6Y2xpZW50OmluY29taW5nP2NsaWVudE5hbWU9bWF4aW1lIHNjb3BlOmNsaWVudDpvdXRnb2luZz9hcHBTaWQ9dHdpbGlvQWNjb3VudFNlY3JldFx1MDAyNmNsaWVudE5hbWU9bWF4aW1lIn0.g_YoUOv8hG_JtFVYv7Czp3gr0kWo2nADwAi1JL_94QI"
+	clientName := "maxime"
+	token, err := client.GenerateToken(clientName, InOutScope, time.Unix(1489364704, 0))
 	if err != nil {
 		t.Fatalf("An error occured on valid token generation: %v", err)
 	}
@@ -46,7 +47,7 @@ func TestVerifyFunc(t *testing.T) {
 		"8008008888",
 	)
 
-	token := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE0ODkzNjQ3MDQsImlzcyI6Ik1heCIsInNjb3BlIjoic2NvcGU6Y2xpZW50OmluY29taW5nP2NsaWVudE5hbWU9YXBwU2lkIHNjb3BlOmNsaWVudDpvdXRnb2luZz9hcHBTaWQ9dHdpbGlvQWNjb3VudFNlY3JldFx1MDAyNmNsaWVudE5hbWU9YXBwU2lkIn0.tWtmv__eEkV1NDp3DR35Q8dlvNPSgi10mD2nMTV3z8c"
+	token := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiJtYXhpbWUiLCJleHAiOjE0ODkzNjQ3MDQsImlzcyI6Ik1heCIsInNjb3BlIjoic2NvcGU6Y2xpZW50OmluY29taW5nP2NsaWVudE5hbWU9bWF4aW1lIHNjb3BlOmNsaWVudDpvdXRnb2luZz9hcHBTaWQ9dHdpbGlvQWNjb3VudFNlY3JldFx1MDAyNmNsaWVudE5hbWU9bWF4aW1lIn0.g_YoUOv8hG_JtFVYv7Czp3gr0kWo2nADwAi1JL_94QI"
 	err := client.VerifyTokenSignature(token)
 	if err == nil || !strings.Contains(err.Error(), "expired") {
 		t.Fatalf("An unexpected error: %v, expected %v", err, "Token is expired")
@@ -64,7 +65,8 @@ func TestVerifyFunc(t *testing.T) {
 		t.Fatalf("An unexpected error: %v, expected %v", err, "token contains an invalid number of segments")
 	}
 
-	token, err = client.GenerateToken(time.Now())
+	clientName := "maxime"
+	token, err = client.GenerateToken(clientName, InOutScope, time.Now())
 	if err != nil {
 		t.Fatalf("An unexpected error happened: %v", err)
 	}

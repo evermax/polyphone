@@ -5,3 +5,6 @@ build: protos/auth.pb.go
 
 protos/auth.pb.go:
 	protoc --go_out="plugins=grpc:." protos/auth.proto
+
+test:
+	go test ./...
