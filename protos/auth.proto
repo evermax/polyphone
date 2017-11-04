@@ -1,13 +1,16 @@
 syntax = "proto3";
 
+option java_multiple_files = true;
+option java_package = "fr.mbpmx.polyphone.myapplication.auth";
+option java_outer_classname = "AuthProto";
+option objc_class_prefix = "Auth";
+
 package auth;
 
-import "google/protobuf/timestamp.proto";
-
 service Auth {
-    rpc Login(LoginRequest) returns (LoginResponse) {}
-    rpc Logout(LogoutRequest) returns (LogoutResponse) {}
-    rpc RefreshToken(RefreshRequest) returns (RefreshResponse) {}
+    rpc Login (LoginRequest) returns (LoginResponse) {}
+    rpc Logout (LogoutRequest) returns (LogoutResponse) {}
+    rpc RefreshToken (RefreshRequest) returns (RefreshResponse) {}
 }
 
 message LoginRequest {
